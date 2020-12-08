@@ -1,0 +1,32 @@
+
+// we probably could do some fun meomization here, which would spare us caching?
+// best to do it implicity: if called without parameter, it is calculated?
+
+const getSumOfArray = (list) => list.reduce((prev,curr) => prev + curr)
+const getAverageOfArray = (list) => getSumOfArray(list) / list.length;
+const getSumDifferencesToMean = (mean,list) => list.reduce((prev,curr)=> prev+Math.abs(curr-mean));
+
+
+
+/**
+ * @param {number[]} editCounts - array of edit counts of different users 
+ * @returns {number} the hoover score
+ * 
+ * As we do not need to know the names of the acounts that made the edits
+ * this can be just an array of edit counts
+ */
+const hooverFromEditCounts = function(editCounts){
+
+    const averageEditCount = getAverageOfArray(editCounts);
+    const sumOfEdits = getSumOfArray(editCounts);
+    const sumOfDifferencesToMean = getSumDifferencesToMean(averageEditCount,editCounts);
+    
+    const hoover = 0.5*(sumOfDifferencesToMean/sumOfEdits)
+
+    return hoover;
+}
+
+
+export {
+    hooverFromEditCounts
+}       
