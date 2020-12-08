@@ -1,14 +1,24 @@
-
-// we probably could do some fun meomization here, which would spare us caching?
-// best to do it implicity: if called without parameter, it is calculated?
-
+/**
+ * @param {number[]} list 
+ * @returns {number} sum of array
+ */
 const getSumOfArray = (list) => list.reduce((prev,curr) => prev + curr)
+
+/**
+ * @param {number[]} list 
+ * @returns {number} average of array
+ */
 const getAverageOfArray = (list) => getSumOfArray(list) / list.length;
+
+/**
+ * @param {number[]} list 
+ * @param {number} [cachedMean] - optional: provide mean, so it does not need to be recalculated
+ * @returns {number} sum of all   differences of list entries to the mean of the whole list. 
+ */
 const getSumDifferencesToMean = (list, cachedMean) => {
     let mean = cachedMean || getAverageOfArray(list);
     return list.reduce((prev,curr)=> prev + Math.abs(curr-mean),0)  
 };
-
 
 
 /**
@@ -29,7 +39,7 @@ const hooverFromEditCounts = function(editCounts){
     return hoover;
 }
 
-
+export default hooverFromEditCounts;    
 export {
     hooverFromEditCounts,
     getSumOfArray,
