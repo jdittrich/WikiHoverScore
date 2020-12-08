@@ -4,7 +4,10 @@
 
 const getSumOfArray = (list) => list.reduce((prev,curr) => prev + curr)
 const getAverageOfArray = (list) => getSumOfArray(list) / list.length;
-const getSumDifferencesToMean = (mean,list) => list.reduce((prev,curr)=> prev+Math.abs(curr-mean));
+const getSumDifferencesToMean = (list, cachedMean) => {
+    let mean = cachedMean || getAverageOfArray(list);
+    return list.reduce((prev,curr)=> prev + Math.abs(curr-mean),0)  
+};
 
 
 
@@ -19,7 +22,7 @@ const hooverFromEditCounts = function(editCounts){
 
     const averageEditCount = getAverageOfArray(editCounts);
     const sumOfEdits = getSumOfArray(editCounts);
-    const sumOfDifferencesToMean = getSumDifferencesToMean(averageEditCount,editCounts);
+    const sumOfDifferencesToMean = getSumDifferencesToMean(editCounts,averageEditCount);
     
     const hoover = 0.5*(sumOfDifferencesToMean/sumOfEdits)
 
@@ -28,5 +31,8 @@ const hooverFromEditCounts = function(editCounts){
 
 
 export {
-    hooverFromEditCounts
+    hooverFromEditCounts,
+    getSumOfArray,
+    getAverageOfArray,
+    getSumDifferencesToMean
 }       
