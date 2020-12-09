@@ -20,7 +20,6 @@ const getSumDifferencesToMean = (list, cachedMean) => {
     return list.reduce((prev,curr)=> prev + Math.abs(curr-mean),0)  
 };
 
-
 /**
  * @param {number[]} editCounts - array of edit counts of different users 
  * @returns {number} the hoover score
@@ -39,8 +38,31 @@ const hooverFromEditCounts = function(editCounts){
     return hoover;
 }
 
-export default hooverFromEditCounts;    
+
+/**
+ * @param {object[]} aggregatedCounts - array of edit counts, aggregated by frequency
+ * @param {number} aggregatedCounts[].edits - the edit count
+ * @param {number} aggregatedCounts[].frequency - how often that edit count is.
+ * @returns {number} the hoover score
+ * 
+ * This function processes the aggregated and shorter form to 
+ * store edit count data: a certain edit count (edits) and how many accounts have this edit count (frequency)
+ * 
+ */
+const hooverFromAggregatedCounts = function (aggregatedCounts) {
+    const sumOfAccounts = aggregatedCounts.reduce((prev, curr) => prev + (curr.frequency), 0);
+    const sumOfEdits = aggregatedCounts.reduce((prev, curr) => prev + (curr.edits * curr.frequency),0);
+    const averageEditCount = sumOfEdits / sumOfAccounts;
+    const sumOfDifferencesToMean = aggregatedCounts.reduce((prev, curr) => prev + ((Math.abs(curr.edits - averageEditCount)) * curr.frequency),0);
+
+    const hoover = 0.5 * (sumOfDifferencesToMean / sumOfEdits);
+
+    return hoover;
+}
+
+
 export {
+    hooverFromAggregatedCounts,
     hooverFromEditCounts,
     getSumOfArray,
     getAverageOfArray,
